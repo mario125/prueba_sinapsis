@@ -1,4 +1,4 @@
-# Instrucciones para Acceder y Levantar Proyectos
+#  Prueba técnica Fullstack Senior, Levantar Proyectos
 
 Este repositorio contiene varios proyectos que conforman la prueba técnica, así como la base de datos necesaria para su funcionamiento. A continuación, se describen los pasos para acceder y levantar cada componente.
 
