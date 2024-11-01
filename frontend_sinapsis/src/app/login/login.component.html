@@ -1,0 +1,23 @@
+<div class="login-container">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <h2>Iniciar Sesión</h2>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Correo Electrónico</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="correo@ejemplo.com" required />
+            <mat-error *ngIf="loginForm.get('email')?.hasError('required')">El correo es obligatorio</mat-error>
+            <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Correo inválido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="password" formControlName="password" placeholder="Contraseña" required />
+            <mat-error *ngIf="loginForm.get('password')?.hasError('required')">La contraseña es obligatoria</mat-error>
+            <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">La contraseña debe tener al menos 6
+                caracteres</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Ingresar</button>
+        <p *ngIf="loginError" class="error-message">Usuario o contraseña incorrectos</p>
+    </form>
+</div>

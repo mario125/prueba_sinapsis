@@ -1,0 +1,136 @@
+.customer-crud-container {
+  display: flex;
+  gap: 40px;
+  padding: 30px;
+  background-color: #f3f4f6;
+}
+
+.form-container, .list-container {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 1.4em;
+  color: #333;
+  font-weight: bold;
+}
+
+mat-form-field {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.toggle-and-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+mat-slide-toggle {
+  margin-right: 20px;
+}
+
+button {
+  min-width: 120px;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.list-container {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.customer-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.customer-info {
+  font-size: 1.1em;
+  color: #444;
+}
+
+.status-active {
+  color: #388e3c; 
+  font-weight: bold;
+}
+
+.status-inactive {
+  color: #d32f2f; 
+  font-weight: bold;
+}
+
+.mat-icon {
+  color: #1976d2; 
+}
+
+mat-list-item:last-child {
+  border-bottom: none;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #f1f1f1; 
+  border-radius: 5px;
+}
+
+button[mat-raised-button] {
+  padding: 10px 20px;
+  font-size: 1em;
+  background-color: #3f51b5;
+  color: #fff;
+}
+button[mat-raised-button]:hover {
+  background-color: #303f9f;
+}
+
+
+.customer-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.customer-info {
+  flex: 1; 
+  font-size: 1.1em;
+  color: #444;
+}
+
+.edit-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.status-active {
+  color: #388e3c;
+  font-weight: bold;
+}
+
+.status-inactive {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+mat-list-item:last-child {
+  border-bottom: none;
+}
+
+
+.customer-info-container {
+  display: grid;
+  grid-template-columns: 1fr auto; 
+  align-items: center; 
+}

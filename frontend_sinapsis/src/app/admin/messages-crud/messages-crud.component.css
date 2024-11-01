@@ -1,0 +1,32 @@
+.messages-crud-container {
+    padding: 3px;
+}
+
+.message-item {
+    padding: 16px; 
+    min-height: 120px; 
+    border-bottom: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    text-align: left; 
+}
+
+.message-item p {
+    margin: 4px 0; 
+}
+
+.status-pending {
+    color: #fbc02d;
+    font-weight: bold;
+}
+
+.status-sent {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.status-error {
+    color: #f44336;
+    font-weight: bold;
+}

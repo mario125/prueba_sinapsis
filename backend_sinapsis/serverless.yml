@@ -1,0 +1,77 @@
+service: mario
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+
+functions:
+  registerCustomer:
+    handler: src/customer.registerCustomer
+    events:
+      - httpApi:
+          method: POST
+          path: /registerCustomer
+  getCustomerAll:
+    handler: src/customer.getCustomerAll
+    events:
+      - http:
+          method: get
+          path: /getCustomerAll
+  registerUser:
+    handler: src/registerUser.registerUser
+    events:
+      - httpApi:
+          method: POST
+          path: /registerUser
+
+  getUserAll:
+    handler: src/registerUser.getUserAll
+    events:
+      - http:
+          method: get
+          path: /getUserAll
+  getUserId:
+    handler: src/getUserId.getUserId
+    events:
+      - http:
+          method: post
+          path: /getUserId
+  createCampaigns:
+    handler: src/campaigns.campaigns
+    events:
+      - http:
+          method: post
+          path: /createCampaigns
+
+  simulateCampaign:
+    handler: src/simulateCampaign.simulateCampaign
+    events:
+      - http:
+          method: post
+          path: campaigns/{id}/simulate
+  campaignsList:
+    handler: src/campaignsList.campaignsList
+    events:
+      - http:
+          method: get
+          path: campaignsList
+  messagesList:
+    handler: src/messagesList.messagesList
+    events:
+      - http:
+          method: get
+          path: messagesList
+custom:
+  esbuild:
+    bundle: true
+    minify: true
+    external:
+      - sequelize
+      - mysql2
+      - pg-hstore
+
+plugins:
+  - serverless-esbuild
+  - serverless-offline

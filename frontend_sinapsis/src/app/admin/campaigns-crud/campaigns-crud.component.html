@@ -1,0 +1,132 @@
+<div class="campaign-crud-container">
+
+    <div class="form-container">
+        <h2>Registrar / Editar Campaña</h2>
+        <form [formGroup]="campaignForm" (ngSubmit)="submitForm()">
+
+            <mat-form-field appearance="fill">
+                <mat-label>Usuario</mat-label>
+                <mat-select formControlName="user_id" required>
+                    <mat-option *ngFor="let user of users" [value]="user.id">
+                        {{ user.username }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="fill">
+                <mat-label>Nombre de Campaña</mat-label>
+                <input matInput formControlName="name" required />
+            </mat-form-field>
+
+
+            <mat-form-field appearance="fill">
+                <mat-label>Fecha de Proceso</mat-label>
+                <input matInput [matDatepicker]="processDatePicker" formControlName="process_date" required />
+                <mat-datepicker-toggle matSuffix [for]="processDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #processDatePicker></mat-datepicker>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="fill">
+                <mat-label>Hora de Proceso (HH:MM:SS)</mat-label>
+                <input matInput formControlName="process_hour" placeholder="Ejemplo: 12:00:00" required />
+            </mat-form-field>
+
+
+            <mat-form-field appearance="fill">
+                <mat-label>Estado del Proceso</mat-label>
+                <mat-select formControlName="process_status" required>
+                    <mat-option value="1">Pendiente</mat-option>
+                    <mat-option value="2">En Proceso</mat-option>
+                    <mat-option value="3">Completado</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="fill">
+                <mat-label>Lista de Teléfonos (separados por '|')</mat-label>
+                <input matInput formControlName="phone_list" placeholder="+1234567890|+0987654321" required />
+            </mat-form-field>
+
+
+            <mat-form-field appearance="fill">
+                <mat-label>Mensaje de la Campaña</mat-label>
+                <textarea matInput formControlName="message_text" rows="4" required></textarea>
+            </mat-form-field>
+
+
+            <button mat-raised-button color="primary" type="submit">Guardar</button>
+        </form>
+    </div>
+
+    <!-- Lista de Campañas -->
+    <div class="list-container">
+        <h2>Listado de Campañas</h2>
+
+        <!-- Filtro por Rango de Fechas -->
+        <div class="date-filter">
+            <mat-form-field appearance="fill">
+                <mat-label>Fecha Inicio</mat-label>
+                <input matInput [matDatepicker]="startPicker" [(ngModel)]="defaultStartDate" />
+                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Fecha Fin</mat-label>
+                <input matInput [matDatepicker]="endPicker" [(ngModel)]="defaultEndDate" />
+                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                <mat-datepicker #endPicker></mat-datepicker>
+            </mat-form-field>
+            <button mat-raised-button color="accent" (click)="loadCampaigns(defaultStartDate, defaultEndDate)">
+                Filtrar
+            </button>
+        </div>
+
+        <!-- Listado de Campañas -->
+        <mat-list>
+            <mat-list-item *ngFor="let campaign of campaigns; let i = index" class="campaign-item">
+                <div class="user-info-container">
+                    <div class="campaign-info">
+                        <p><strong>{{ campaign.name }}</strong></p>
+                        <p>Fecha de Proceso: {{ campaign.process_date | date }} {{ campaign.process_hour }}</p>
+
+                        <p>
+                            Estado:
+                            <span *ngIf="campaign.process_status === 1" class="status-pending">Pendiente</span>
+                            <span *ngIf="campaign.process_status === 2" class="status-in-progress">En Proceso</span>
+                            <span *ngIf="campaign.process_status === 3" class="status-completed">Completado</span>
+                        </p>
+                    </div>
+
+                    <!-- Acciones: Menú desplegable -->
+                    <div class="actions">
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <!-- Editar -->
+                            <button mat-menu-item (click)="editCampaign(campaign)">
+                                <mat-icon>edit</mat-icon>
+                                <span>Editar</span>
+                            </button>
+                            <!-- Ver Mensajes -->
+                            <button mat-menu-item (click)="openMessagesDialog(campaign.messages)">
+                                <mat-icon>info</mat-icon>
+                                <span>Ver Mensajes</span>
+                            </button>
+                            <!-- Simular Envío, solo si está pendiente -->
+                            <button mat-menu-item *ngIf="campaign.process_status === 1"
+                                (click)="simulateCampaign(campaign)" [disabled]="loadingCampaignId === campaign.id">
+                                <mat-icon>send</mat-icon>
+                                <span>Simular Envío</span>
+                                <mat-progress-spinner *ngIf="loadingCampaignId === campaign.id" mode="indeterminate"
+                                    diameter="20"></mat-progress-spinner>
+                            </button>
+                        </mat-menu>
+                    </div>
+                </div>
+            </mat-list-item>
+        </mat-list>
+    </div>
+</div>

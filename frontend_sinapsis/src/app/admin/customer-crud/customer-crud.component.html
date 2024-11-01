@@ -1,0 +1,45 @@
+<div class="customer-crud-container">
+    <div class="form-container">
+        <h2>Registrar / Editar Cliente</h2>
+        <form [formGroup]="customerForm" (ngSubmit)="submitForm()">
+            <mat-form-field appearance="fill">
+                <mat-label>ID del Cliente</mat-label>
+                <input matInput formControlName="customer_id" type="number" required />
+                <mat-error *ngIf="customerForm.get('customer_id')?.hasError('required')">ID es obligatorio</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="name" required />
+                <mat-error *ngIf="customerForm.get('name')?.hasError('required')">Nombre es obligatorio</mat-error>
+            </mat-form-field>
+
+            <div class="toggle-and-button">
+                <mat-slide-toggle formControlName="status">Activo</mat-slide-toggle>
+                <button mat-raised-button color="primary" type="submit">Guardar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="list-container">
+        <h2>Listado de Clientes</h2>
+        <mat-list>
+            <mat-list-item *ngFor="let customer of customers" class="customer-item">
+                <div class="customer-info-container">
+                    <div class="customer-info">
+                        <strong>{{ customer.name }}</strong>
+                        <span *ngIf="customer.status === '1'" class="status-active"> (Activo)</span>
+                        <span *ngIf="customer.status === '0'" class="status-inactive"> (Inactivo)</span>
+                    </div>
+                    <div class="edit-button">
+                        <button mat-icon-button color="accent" (click)="editCustomer(customer)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div>
+                </div>
+
+            </mat-list-item>
+        </mat-list>
+    </div>
+
+</div>

@@ -1,0 +1,372 @@
+openapi: 3.0.0
+info:
+  title: API de Campañas y Usuarios
+  version: 1.0.0
+  description: "Documentación de la API para la gestión de campañas y usuarios"
+servers:
+  - url: http://localhost:3000/dev
+paths:
+  /createCampaigns:
+    post:
+      summary: "Crear o editar una campaña"
+      description: "Crea una nueva campaña o edita una campaña existente"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCampaignRequest"
+            example:
+              user_id: 1
+              name: "Campaña de Prueba"
+              process_date: "2023-01-01"
+              process_hour: "12:00:00"
+              process_status: "1"
+              phone_list: "+1234567890|+0987654321|+1122334455|+51987654321"
+              message_text: "Este es un mensaje de prueba para la campaña."
+      responses:
+        "200":
+          description: "Campaña creada con éxito"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateCampaignResponse"
+  /campaigns/{id}/simulate:
+    post:
+      summary: "Simular el envío de una campaña"
+      description: "Simula el envío de mensajes de una campaña específica"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: "ID de la campaña a simular"
+      responses:
+        "200":
+          description: "Envío de campaña simulado con éxito"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimulateCampaignResponse"
+        "404":
+          description: "Campaña no encontrada"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /campaignsList:
+    get:
+      summary: "Listar campañas en un rango de fechas"
+      description: "Obtiene una lista de campañas en un rango de fechas específico"
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: "Fecha de inicio (YYYY-MM-DD)"
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: "Fecha de fin (YYYY-MM-DD)"
+      responses:
+        "200":
+          description: "Lista de campañas obtenida con éxito"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListCampaignsResponse"
+  /messagesList:
+    get:
+      summary: "Listar mensajes de una campaña en un rango de fechas"
+      description: "Obtiene los mensajes asociados a una campaña en un rango de fechas"
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: "Fecha de inicio (YYYY-MM-DD)"
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          description: "Fecha de fin (YYYY-MM-DD)"
+        - name: campaignId
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: "ID de la campaña"
+      responses:
+        "200":
+          description: "Lista de mensajes obtenida con éxito"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListMessagesResponse"
+  /registerUser:
+    post:
+      summary: "Registrar un usuario"
+      description: "Registra un nuevo usuario en el sistema"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterUserRequest"
+            example:
+              customer_id: 1
+              username: "nuevoUsuario 125--"
+              status: true
+      responses:
+        "200":
+          description: "Usuario registrado con éxito"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterUserResponse"
+  /getUserAll:
+    get:
+      summary: "Obtener todos los usuarios"
+      description: "Obtiene una lista de todos los usuarios registrados"
+      responses:
+        "200":
+          description: "Lista de usuarios obtenida con éxito"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListUsersResponse"
+  /registerCustomer:
+    post:
+      summary: "Registrar un cliente"
+      description: "Registra un nuevo cliente en el sistema"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterCustomerRequest"
+            example:
+              name: "Cliente Ejemplo"
+              status: true
+      responses:
+        "200":
+          description: "Cliente registrado con éxito"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterCustomerResponse"
+  /getCustomerAll:
+    get:
+      summary: "Obtener todos los clientes"
+      description: "Obtiene una lista de todos los clientes registrados"
+      responses:
+        "200":
+          description: "Lista de clientes obtenida con éxito"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListCustomersResponse"
+
+components:
+  schemas:
+    CreateCampaignRequest:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        name:
+          type: string
+        process_date:
+          type: string
+          format: date
+        process_hour:
+          type: string
+        process_status:
+          type: string
+        phone_list:
+          type: string
+        message_text:
+          type: string
+      required:
+        - user_id
+        - name
+        - process_date
+        - process_hour
+        - process_status
+        - phone_list
+        - message_text
+    CreateCampaignResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: boolean
+        data:
+          $ref: "#/components/schemas/CampaignData"
+    CampaignData:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        name:
+          type: string
+        process_date:
+          type: string
+          format: date-time
+        process_hour:
+          type: string
+        process_status:
+          type: string
+        phone_list:
+          type: string
+        message_text:
+          type: string
+    SimulateCampaignResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: boolean
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: boolean
+    ListCampaignsResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: boolean
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/CampaignData"
+    ListMessagesResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: boolean
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/MessageData"
+    MessageData:
+      type: object
+      properties:
+        id:
+          type: integer
+        campaign_id:
+          type: integer
+        phone:
+          type: string
+        text:
+          type: string
+        shipping_status:
+          type: integer
+        process_date:
+          type: string
+          format: date-time
+        process_hour:
+          type: string
+    RegisterUserRequest:
+      type: object
+      properties:
+        customer_id:
+          type: integer
+        username:
+          type: string
+        status:
+          type: boolean
+    RegisterUserResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: boolean
+        data:
+          type: object
+          properties:
+            user:
+              $ref: "#/components/schemas/UserData"
+    UserData:
+      type: object
+      properties:
+        id:
+          type: integer
+        customer_id:
+          type: integer
+        username:
+          type: string
+        status:
+          type: string
+    RegisterCustomerRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: boolean
+    RegisterCustomerResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: boolean
+        data:
+          type: object
+          properties:
+            customer:
+              $ref: "#/components/schemas/CustomerData"
+    CustomerData:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        status:
+          type: string
+    ListUsersResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: boolean
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserData"
+    ListCustomersResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: boolean
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/CustomerData"

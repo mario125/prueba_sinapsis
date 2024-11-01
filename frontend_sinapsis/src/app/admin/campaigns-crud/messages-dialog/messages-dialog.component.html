@@ -1,0 +1,28 @@
+<div class="dialog-header">
+    <h2>Mensajes de la Campaña</h2>
+    <p><strong>Mensaje Enviado:</strong> {{ data[0]?.text }}</p>
+</div>
+
+<div class="dialog-body">
+    <mat-list>
+        <mat-list-item *ngFor="let message of data" class="message-item">
+            <div>
+                <p><strong>Teléfono:</strong> {{ message.phone }}</p>
+                <!-- <p><strong>Texto:</strong> {{ message.text }}</p> -->
+                <p>
+                    <strong>Estado de envío:</strong>
+                    <span [ngClass]="getStatusClass(message.shipping_status)">
+                        {{ getStatusLabel(message.shipping_status) }}
+                    </span>
+                </p>
+                <p>
+                    <strong>Fecha:</strong> {{ message.process_date }} - {{ message.process_hour }}
+                </p>
+            </div>
+        </mat-list-item>
+    </mat-list>
+</div>
+
+<div class="dialog-footer">
+    <!-- <button mat-button mat-dialog-close>Cerrar</button> -->
+</div>
